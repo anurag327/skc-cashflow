@@ -138,33 +138,55 @@ const {
 
   try {
 
-    await pool.query(
-      `INSERT INTO transactions
-      (
-        type,
-        amount,
-        from_user_id,
-        to_user_id,
-        from_name,
-        to_name,
-        remark,
-        status
-        created_by
-      )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+await pool.query(
 
-      [
-        type,
-        amount,
-        from_user_id,
-        to_user_id,
-        from_name,
-        to_name,
-        remark,
-        'pending'
-        created_by
-      ]
-    );
+`INSERT INTO transactions (
+
+type,
+
+amount,
+
+from_user_id,
+
+to_user_id,
+
+from_name,
+
+to_name,
+
+remark,
+
+status,
+
+created_by
+
+)
+
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+
+[
+
+type,
+
+amount,
+
+from_user_id,
+
+to_user_id,
+
+from_name,
+
+to_name,
+
+remark,
+
+'pending',
+
+created_by
+
+]
+
+);
 
     res.json({
       message: 'Transaction saved'
