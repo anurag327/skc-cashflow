@@ -18,9 +18,6 @@ const pool = new Pool({
 });
 
 // HOME
-app.get('/', (req, res) => {
-  res.send('Cashflow running');
-});
 
 // USERS
 app.get('/users', async (req, res) => {
