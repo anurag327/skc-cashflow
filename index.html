@@ -382,6 +382,11 @@ async function addTransaction(){
 
   const amount =
     document.getElementById("amount").value;
+    const currentUser = JSON.parse(
+  localStorage.getItem('user')
+);
+
+console.log(currentUser);
 
   const payload = {
 
@@ -401,7 +406,7 @@ async function addTransaction(){
 
     remark:"UI Entry"
 
-    created_by:
+    created_by: currentUser.name
       JSON.parse(
     localStorage.getItem('user')
   ).name,
