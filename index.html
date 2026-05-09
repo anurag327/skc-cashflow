@@ -401,6 +401,11 @@ async function addTransaction(){
 
     remark:"UI Entry"
 
+    created_by:
+      JSON.parse(
+    localStorage.getItem('user')
+  ).name,
+
   };
 
   await fetch(
