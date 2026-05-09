@@ -301,7 +301,7 @@ onkeyup="filterLedger()"
 </div>
 
 </div>
-const user = localStorage.getItem('user');
+
 
 if(!user){
 
@@ -635,6 +635,14 @@ loadUsers();
 loadPending();
 loadLedger();
 loadBalances();
+
+const user = localStorage.getItem('user');
+
+if(!user){
+
+  window.location.href = 'login.html';
+
+}
 
 </script>
 
