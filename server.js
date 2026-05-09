@@ -11,11 +11,10 @@ app.use(express.static(__dirname));
 
 // DATABASE
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'cashflow',
-  password: 'admin123',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // HOME
