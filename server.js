@@ -116,15 +116,25 @@ app.post('/login', async (req,res)=>{
 // ADD TRANSACTION
 app.post('/transaction', async (req, res) => {
 
-  const {
-    type,
-    amount,
-    from_user_id,
-    to_user_id,
-    from_name,
-    to_name,
-    remark
-  } = req.body;
+const {
+
+  type,
+
+  amount,
+
+  from_user_id,
+
+  to_user_id,
+
+  from_name,
+
+  to_name,
+
+  remark,
+
+  created_by
+
+} = req.body;
 
   try {
 
@@ -139,8 +149,9 @@ app.post('/transaction', async (req, res) => {
         to_name,
         remark,
         status
+        created_by
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
 
       [
         type,
@@ -151,6 +162,7 @@ app.post('/transaction', async (req, res) => {
         to_name,
         remark,
         'pending'
+        created_by
       ]
     );
 
