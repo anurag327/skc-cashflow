@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>SKC Login</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+  margin:0;
+  background:#0f3d3e;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:Arial;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  width:320px;
+  border-radius:12px;
+}
+
+input,button{
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  box-sizing:border-box;
+}
+
+button{
+  background:#0f3d3e;
+  color:white;
+  border:none;
+}
+
+h2{
+  text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>SKC LOGIN</h2>
+
+<input
+id="username"
+placeholder="Username"
+>
+
+<input
+id="password"
+type="password"
+placeholder="Password"
+>
+
+<button onclick="login()">
+Login
+</button>
+
+</div>
+
+<script>
+
+const API =
+"https://skc-cashflow.onrender.com";
+
+async function login(){
+
+  const username =
+    document.getElementById('username').value;
+
+  const password =
+    document.getElementById('password').value;
+
+  const res = await fetch(
+
+    API + '/login',
+
+    {
+
+      method:'POST',
+
+      headers:{
+        'Content-Type':'application/json'
+      },
+
+      body: JSON.stringify({
+
+        username,
+        password
+
+      })
+
+    }
+
+  );
+
+  const data = await res.json();
+
+  if(data.token){
+
+    localStorage.setItem(
+      'token',
+      data.token
+    );
+
+    localStorage.setItem(
+      'user',
+      JSON.stringify(data.user)
+    );
+
+    window.location.href =
+      'index.html';
+
+  } else {
+
+    alert('Login Failed');
+
+  }
+
+}
+
+</script>
+
+</body>
+
+</html>
