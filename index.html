@@ -309,6 +309,13 @@ if(!user){
 
 }
 <script>
+  const user = localStorage.getItem('user');
+
+if(!user){
+
+  window.location.href = 'login.html';
+
+}
 
 const API = "https://skc-cashflow.onrender.com";
 
@@ -636,13 +643,6 @@ loadPending();
 loadLedger();
 loadBalances();
 
-const user = localStorage.getItem('user');
-
-if(!user){
-
-  window.location.href = 'login.html';
-
-}
 
 </script>
 
