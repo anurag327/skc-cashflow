@@ -396,16 +396,15 @@ app.get('/balance/:user_id', async (req, res) => {
 });
 // DELETE TRANSACTION
 
+// DELETE TRANSACTION
+
 app.post('/delete/:id', async (req,res)=>{
 
   const { id } = req.params;
 
   const {
-
     deleted_by,
-
     deleted_reason
-
   } = req.body;
 
   try {
@@ -427,21 +426,15 @@ app.post('/delete/:id', async (req,res)=>{
       WHERE id=$3`,
 
       [
-
         deleted_by,
-
         deleted_reason,
-
         id
-
       ]
 
     );
 
     res.json({
-
       message:'Deleted'
-
     });
 
   } catch(error){
@@ -449,9 +442,7 @@ app.post('/delete/:id', async (req,res)=>{
     console.log(error);
 
     res.status(500).json({
-
       error:'Delete failed'
-
     });
 
   }
