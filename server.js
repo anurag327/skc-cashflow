@@ -157,71 +157,19 @@ async function sendWhatsAppMessage(
 
           to:'971559146028',
 
-          type:'interactive',
+type:'text',
 
-          interactive:{
-
-            type:'button',
-
-            body:{
-              text:
+text:{
+  body:
 `New Transaction Pending Approval
 
 Amount: ₹${amount}
 
 From: ${from_name}
 
-To: ${to_name}`
-            },
+To: ${to_name}
 
-            action:{
-
-              buttons:[
-
-                {
-
-                  type:'reply',
-
-                  reply:{
-                    id:`approve_${transaction_id}`,
-                    title:'Approve'
-                  }
-
-                },
-
-                {
-
-                  type:'reply',
-
-                  reply:{
-                    id:`reject_${transaction_id}`,
-                    title:'Reject'
-                  }
-
-                }
-
-              ]
-
-            }
-
-          }
-
-        })
-
-      }
-
-    );
-
-    console.log(
-      'WhatsApp message sent'
-    );
-
-  } catch(error){
-
-    console.log(error);
-
-  }
-
+Transaction ID: ${transaction_id}`
 }
 
 // ADD TRANSACTION
