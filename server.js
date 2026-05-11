@@ -274,7 +274,7 @@ app.get('/ledger', async (req, res) => {
         remark,
         created_at,
         from_name,
-        to_name
+        to_name,
         created_by
 
       FROM transactions
@@ -416,6 +416,39 @@ app.post('/delete/:id', async (req,res)=>{
 
     res.status(500).json({
       error:'Delete failed'
+    });
+
+  }
+
+});
+// DELETED TRANSACTIONS
+
+app.get('/deleted', async (req,res)=>{
+
+  try {
+
+    const result = await pool.query(
+
+      `SELECT *
+
+      FROM transactions
+
+      WHERE status='deleted'
+
+      ORDER BY deleted_at DESC`
+
+    );
+
+    res.json(result.rows);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+
+      error:'Deleted audit error'
+
     });
 
   }

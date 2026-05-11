@@ -147,6 +147,10 @@
     Employee Balances
   </button>
 
+  <button onclick="showSection('deleted')">
+  Deleted Entries
+</button>
+
 </div>
 
 <div class="main">
@@ -308,8 +312,50 @@
   </div>
 
 </div>
+  <!-- DELETED -->
+
+<div id="deleted" class="section">
+
+  <div class="card">
+
+    <h2 style="margin-bottom:20px;">
+      Deleted Transactions Audit
+    </h2>
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>ID</th>
+
+          <th>Amount</th>
+
+          <th>From</th>
+
+          <th>To</th>
+
+          <th>Deleted By</th>
+
+          <th>Reason</th>
+
+          <th>Deleted At</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="deletedTable"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
 
 <script>
+
 
 const user = localStorage.getItem('user');
 
@@ -617,6 +663,8 @@ loadUsers().then(()=>{
   loadLedger();
 
   loadBalances();
+  
+  loadDeleted();
 
 });
 async function deleteTransaction(id){
@@ -662,6 +710,57 @@ async function deleteTransaction(id){
   loadPending();
 
   loadBalances();
+
+}
+async function loadDeleted(){
+
+  const res =
+    await fetch(API + "/deleted");
+
+  const data =
+    await res.json();
+
+  const table =
+    document.getElementById(
+      "deletedTable"
+    );
+
+  table.innerHTML = "";
+
+  data.forEach(t => {
+
+    const deletedDate =
+      t.deleted_at
+      ?
+      new Date(
+        t.deleted_at
+      ).toLocaleString()
+      :
+      '';
+
+    table.innerHTML += `
+
+      <tr>
+
+        <td>${t.id}</td>
+
+        <td>₹${t.amount}</td>
+
+        <td>${t.from_name}</td>
+
+        <td>${t.to_name}</td>
+
+        <td>${t.deleted_by || ''}</td>
+
+        <td>${t.deleted_reason || ''}</td>
+
+        <td>${deletedDate}</td>
+
+      </tr>
+
+    `;
+
+  });
 
 }
 </script>
