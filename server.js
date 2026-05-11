@@ -366,34 +366,6 @@ app.get('/balance/:user_id', async (req, res) => {
 
 });
 
-    const finalData = result.rows.map(r => ({
-
-      name: r.name,
-
-      received: Number(r.received),
-
-      given: Number(r.given),
-
-      balance:
-        Number(r.received)
-        -
-        Number(r.given)
-
-    }));
-
-    res.json(finalData);
-
-  } catch(error){
-
-    console.error(error);
-
-    res.status(500).json({
-      error:'Balance error'
-    });
-
-  }
-
-});
 // DELETE TRANSACTION
 
 // DELETE TRANSACTION
