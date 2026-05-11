@@ -125,7 +125,7 @@
 
 <div class="sidebar">
 
-  <h1>SKC</h1>
+  <h1>SKC REAL ESTATE LLC</h1>
 
   <button onclick="showSection('dashboard')">
     Dashboard
@@ -149,6 +149,10 @@
 
   <button onclick="showSection('deleted')">
   Deleted Entries
+</button>
+
+<button onclick="logout()">
+  Logout
 </button>
 
 </div>
@@ -850,6 +854,13 @@ function viewProof(image){
     </html>
 
   `);
+
+}
+function logout(){
+
+  localStorage.removeItem('user');
+
+  window.location.href = 'login.html';
 
 }
 </script>
