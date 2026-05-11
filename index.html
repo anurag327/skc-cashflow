@@ -638,10 +638,12 @@ ${
 
   ?
 
-  `<a href="${t.proof_url}"
-      target="_blank">
-      View
-   </a>`
+<button
+  class="submitBtn"
+  onclick="viewProof('${t.proof_url}')"
+>
+  View
+</button>
 
   :
 
@@ -820,6 +822,43 @@ function toBase64(file){
       reject(error);
 
   });
+
+}
+function viewProof(image){
+
+  const win = window.open("");
+
+  win.document.write(`
+
+    <html>
+
+      <head>
+
+        <title>Proof</title>
+
+      </head>
+
+      <body style="
+        margin:0;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:black;
+      ">
+
+        <img
+          src="${image}"
+          style="
+            max-width:100%;
+            max-height:100vh;
+          "
+        />
+
+      </body>
+
+    </html>
+
+  `);
 
 }
 </script>
