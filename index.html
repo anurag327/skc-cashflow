@@ -206,6 +206,13 @@
         placeholder="Remark"
       >
 
+      <input
+  type="file"
+  id="proofFile"
+  accept="image/*"
+  capture="environment"
+>
+
       <button
         class="submitBtn"
         onclick="addTransaction()"
@@ -270,6 +277,7 @@
             <th>Status</th>
             <th>Created By</th>
             <th>Action</th>
+            <th>Proof</th>
           </tr>
 
         </thead>
@@ -440,6 +448,20 @@ async function addTransaction(){
   const remark =
     document.getElementById("remark").value;
 
+    const proofFile =
+  document.getElementById(
+    "proofFile"
+  ).files[0];
+
+  let proofBase64 = "";
+
+if(proofFile){
+
+  proofBase64 =
+    await toBase64(proofFile);
+
+}
+
   const payload = {
 
     type:"receive",
@@ -456,7 +478,9 @@ async function addTransaction(){
 
     remark: remark,
 
-    created_by: currentUser.name
+    created_by: currentUser.name,
+
+    proof_url: proofBase64
 
   };
 
@@ -607,6 +631,24 @@ function renderLedger(data){
           </button>
 
         </td>
+        <td>
+
+${
+  t.proof_url
+
+  ?
+
+  `<a href="${t.proof_url}"
+      target="_blank">
+      View
+   </a>`
+
+  :
+
+  ''
+}
+
+</td>
 
       </tr>
 
@@ -759,6 +801,23 @@ async function loadDeleted(){
       </tr>
 
     `;
+
+  });
+
+}
+function toBase64(file){
+
+  return new Promise((resolve,reject)=>{
+
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () =>
+      resolve(reader.result);
+
+    reader.onerror = error =>
+      reject(error);
 
   });
 

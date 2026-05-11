@@ -132,7 +132,9 @@ const {
 
   remark,
 
-  created_by
+  created_by,
+
+  proof_url
 
 } = req.body;
 
@@ -158,11 +160,13 @@ remark,
 
 status,
 
-created_by
+created_by,
+
+proof_url
 
 )
 
-VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
 
 [
 
@@ -182,7 +186,9 @@ remark,
 
 'pending',
 
-created_by
+created_by,
+
+proof_url
 
 ]
 
@@ -275,7 +281,8 @@ app.get('/ledger', async (req, res) => {
         created_at,
         from_name,
         to_name,
-        created_by
+        created_by,
+        proof_url
 
       FROM transactions
 
