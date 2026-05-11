@@ -171,6 +171,23 @@ To: ${to_name}
 
 Transaction ID: ${transaction_id}`
 }
+        })
+
+      }
+
+    );
+
+    console.log(
+      'WhatsApp message sent'
+    );
+
+  } catch(error){
+
+    console.log(error);
+
+  }
+
+}
 
 // ADD TRANSACTION
 app.post('/transaction', async (req, res) => {
@@ -681,6 +698,96 @@ app.get('/webhook', (req,res)=>{
   } else {
 
     res.sendStatus(403);
+
+  }
+
+});
+
+// RECEIVE WHATSAPP REPLIES
+
+app.post('/webhook', async (req,res)=>{
+
+  try {
+
+    const message =
+
+      req.body
+      ?.entry?.[0]
+      ?.changes?.[0]
+      ?.value?.messages?.[0];
+
+    if(!message){
+
+      return res.sendStatus(200);
+
+    }
+
+    const text =
+
+      message?.text?.body
+      ?.toLowerCase()
+      ?.trim();
+
+    console.log(
+      'WhatsApp reply:',
+      text
+    );
+
+    if(text.startsWith('approve')){
+
+      const id =
+        text.split(' ')[1];
+
+      await pool.query(
+
+        `UPDATE transactions
+
+         SET status='approved'
+
+         WHERE id=$1`,
+
+        [id]
+
+      );
+
+      console.log(
+        'Approved transaction',
+        id
+      );
+
+    }
+
+    if(text.startsWith('reject')){
+
+      const id =
+        text.split(' ')[1];
+
+      await pool.query(
+
+        `UPDATE transactions
+
+         SET status='rejected'
+
+         WHERE id=$1`,
+
+        [id]
+
+      );
+
+      console.log(
+        'Rejected transaction',
+        id
+      );
+
+    }
+
+    res.sendStatus(200);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.sendStatus(500);
 
   }
 
