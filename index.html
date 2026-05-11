@@ -631,24 +631,15 @@ function renderLedger(data){
           </button>
 
         </td>
-        <td>
+<td>
 
-${
-  t.proof_url
-
-  ?
-
-<button
-  class="submitBtn"
-  onclick='viewProof(${JSON.stringify(t.proof_url)})'
->
-  View
-</button>
-
-  :
-
-  ''
-}
+  ${
+    t.proof_url
+    ?
+    '<button class="submitBtn" onclick="alert(`Proof Uploaded`)">View</button>'
+    :
+    ''
+  }
 
 </td>
 
