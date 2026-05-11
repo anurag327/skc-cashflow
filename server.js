@@ -160,6 +160,8 @@ remark,
 
 status,
 
+pending,
+
 created_by,
 
 proof_url
