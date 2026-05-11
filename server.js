@@ -297,34 +297,74 @@ app.get('/ledger', async (req, res) => {
 });
 
 // EMPLOYEE BALANCE
-app.get('/employee-balance', async (req, res) => {
+
+app.get('/balance/:user_id', async (req, res) => {
+
+  const { user_id } = req.params;
 
   try {
 
-    const result = await pool.query(`
+    const received = await pool.query(
 
-      SELECT
-        name,
+      `SELECT
+      COALESCE(SUM(amount),0) AS total
 
-        COALESCE(
-          (
-            SELECT SUM(amount)
-            FROM transactions
-            WHERE to_name = users.name
-          ),0
-        ) AS received,
+      FROM transactions
 
-        COALESCE(
-          (
-            SELECT SUM(amount)
-            FROM transactions
-            WHERE from_name = users.name
-          ),0
-        ) AS given
+      WHERE to_user_id=$1
 
-      FROM users
+      AND status != 'deleted'`,
 
-    `);
+      [user_id]
+
+    );
+
+    const given = await pool.query(
+
+      `SELECT
+      COALESCE(SUM(amount),0) AS total
+
+      FROM transactions
+
+      WHERE from_user_id=$1
+
+      AND status != 'deleted'`,
+
+      [user_id]
+
+    );
+
+    const balance =
+
+      received.rows[0].total -
+      given.rows[0].total;
+
+    res.json({
+
+      user_id,
+
+      received:
+        received.rows[0].total,
+
+      given:
+        given.rows[0].total,
+
+      balance
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      error:
+      'Error calculating balance'
+    });
+
+  }
+
+});
 
     const finalData = result.rows.map(r => ({
 
@@ -354,7 +394,69 @@ app.get('/employee-balance', async (req, res) => {
   }
 
 });
+// DELETE TRANSACTION
 
+app.post('/delete/:id', async (req,res)=>{
+
+  const { id } = req.params;
+
+  const {
+
+    deleted_by,
+
+    deleted_reason
+
+  } = req.body;
+
+  try {
+
+    await pool.query(
+
+      `UPDATE transactions
+
+      SET
+
+      status='deleted',
+
+      deleted_by=$1,
+
+      deleted_reason=$2,
+
+      deleted_at=NOW()
+
+      WHERE id=$3`,
+
+      [
+
+        deleted_by,
+
+        deleted_reason,
+
+        id
+
+      ]
+
+    );
+
+    res.json({
+
+      message:'Deleted'
+
+    });
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+
+      error:'Delete failed'
+
+    });
+
+  }
+
+});
 // SERVER
 app.listen(3000, () => {
 
