@@ -569,6 +569,43 @@ app.put('/user/:id', async (req,res)=>{
 
 });
 
+// WHATSAPP WEBHOOK VERIFY
+
+app.get('/webhook', (req,res)=>{
+
+  const verify_token = 'skcverify123';
+
+  const mode =
+    req.query['hub.mode'];
+
+  const token =
+    req.query['hub.verify_token'];
+
+  const challenge =
+    req.query['hub.challenge'];
+
+  if(
+
+    mode === 'subscribe'
+
+    &&
+
+    token === verify_token
+
+  ){
+
+    console.log('Webhook verified');
+
+    res.status(200).send(challenge);
+
+  } else {
+
+    res.sendStatus(403);
+
+  }
+
+});
+
 // SERVER
 app.listen(3000, () => {
 
