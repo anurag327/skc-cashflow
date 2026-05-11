@@ -275,6 +275,7 @@ app.get('/ledger', async (req, res) => {
         created_at,
         from_name,
         to_name
+        created_by
 
       FROM transactions
 
