@@ -131,6 +131,10 @@
     Dashboard
   </button>
 
+  <button onclick="showSection('profile')">
+  My Profile
+</button>
+
   <button onclick="showSection('addTransaction')">
     Add Transaction
   </button>
@@ -154,6 +158,8 @@
 <button onclick="logout()">
   Logout
 </button>
+
+
 
 </div>
 
@@ -361,6 +367,57 @@
       <tbody id="deletedTable"></tbody>
 
     </table>
+
+  </div>
+
+</div>
+
+<!-- PROFILE -->
+
+<div id="profile" class="section">
+
+  <div class="card">
+
+    <h2 style="margin-bottom:20px;">
+      My Profile
+    </h2>
+
+    <input
+      type="text"
+      id="profileName"
+      placeholder="Name"
+    >
+
+    <input
+      type="email"
+      id="profileEmail"
+      placeholder="Email"
+    >
+
+    <input
+      type="text"
+      id="profileMobile"
+      placeholder="Mobile Number"
+    >
+
+    <input
+      type="text"
+      id="profileWhatsapp"
+      placeholder="WhatsApp Number"
+    >
+
+    <input
+      type="password"
+      id="profilePassword"
+      placeholder="New Password"
+    >
+
+    <button
+      class="submitBtn"
+      onclick="saveProfile()"
+    >
+      Save Profile
+    </button>
 
   </div>
 
@@ -705,6 +762,8 @@ loadUsers().then(()=>{
   
   loadDeleted();
 
+  loadProfile();
+
 });
 async function deleteTransaction(id){
 
@@ -856,6 +915,88 @@ function viewProof(image){
   `);
 
 }
+
+async function loadProfile(){
+
+  const res = await fetch(
+
+    API + "/user/" + currentUser.id
+
+  );
+
+  const user = await res.json();
+
+  document.getElementById(
+    "profileName"
+  ).value = user.name || '';
+
+  document.getElementById(
+    "profileEmail"
+  ).value = user.email || '';
+
+  document.getElementById(
+    "profileMobile"
+  ).value = user.mobile || '';
+
+  document.getElementById(
+    "profileWhatsapp"
+  ).value = user.whatsapp || '';
+
+}
+
+async function saveProfile(){
+
+  const payload = {
+
+    name:
+      document.getElementById(
+        "profileName"
+      ).value,
+
+    email:
+      document.getElementById(
+        "profileEmail"
+      ).value,
+
+    mobile:
+      document.getElementById(
+        "profileMobile"
+      ).value,
+
+    whatsapp:
+      document.getElementById(
+        "profileWhatsapp"
+      ).value,
+
+    password:
+      document.getElementById(
+        "profilePassword"
+      ).value
+
+  };
+
+  await fetch(
+
+    API + "/user/" + currentUser.id,
+
+    {
+
+      method:"PUT",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body: JSON.stringify(payload)
+
+    }
+
+  );
+
+  alert("Profile Updated");
+
+}
+
 function logout(){
 
   localStorage.removeItem('user');

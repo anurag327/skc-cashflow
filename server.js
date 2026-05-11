@@ -160,8 +160,6 @@ remark,
 
 status,
 
-pending,
-
 created_by,
 
 proof_url
@@ -463,6 +461,114 @@ app.get('/deleted', async (req,res)=>{
   }
 
 });
+
+// GET USER PROFILE
+
+app.get('/user/:id', async (req,res)=>{
+
+  const { id } = req.params;
+
+  try {
+
+    const result = await pool.query(
+
+      `SELECT
+        id,
+        name,
+        email,
+        mobile,
+        whatsapp
+
+      FROM users
+
+      WHERE id=$1`,
+
+      [id]
+
+    );
+
+    res.json(result.rows[0]);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+
+      error:'Profile fetch error'
+
+    });
+
+  }
+
+});
+
+
+// UPDATE USER PROFILE
+
+app.put('/user/:id', async (req,res)=>{
+
+  const { id } = req.params;
+
+  const {
+
+    name,
+    email,
+    mobile,
+    whatsapp,
+    password
+
+  } = req.body;
+
+  try {
+
+    await pool.query(
+
+      `UPDATE users
+
+      SET
+
+      name=$1,
+      email=$2,
+      mobile=$3,
+      whatsapp=$4,
+      password=$5
+
+      WHERE id=$6`,
+
+      [
+
+        name,
+        email,
+        mobile,
+        whatsapp,
+        password || '',
+        id
+
+      ]
+
+    );
+
+    res.json({
+
+      message:'Profile updated'
+
+    });
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+
+      error:'Profile update failed'
+
+    });
+
+  }
+
+});
+
 // SERVER
 app.listen(3000, () => {
 
