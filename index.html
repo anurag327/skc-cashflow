@@ -640,7 +640,7 @@ ${
 
 <button
   class="submitBtn"
-  onclick="viewProof('${t.proof_url}')"
+  onclick='viewProof(${JSON.stringify(t.proof_url)})'
 >
   View
 </button>
