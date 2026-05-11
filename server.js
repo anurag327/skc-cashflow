@@ -113,6 +113,109 @@ app.post('/login', async (req,res)=>{
 
 });
 
+// SEND WHATSAPP MESSAGE
+
+async function sendWhatsAppMessage(
+
+  amount,
+  from_name,
+  to_name,
+  transaction_id
+
+){
+
+  try {
+
+    await fetch(
+
+      `https://graph.facebook.com/v25.0/${process.env.PHONE_NUMBER_ID}/messages`,
+
+      {
+
+        method:'POST',
+
+        headers:{
+
+          'Content-Type':'application/json',
+
+          'Authorization':
+            `Bearer ${process.env.WHATSAPP_TOKEN}`
+
+        },
+
+        body: JSON.stringify({
+
+          messaging_product:'whatsapp',
+
+          to:'971559146028',
+
+          type:'interactive',
+
+          interactive:{
+
+            type:'button',
+
+            body:{
+              text:
+`New Transaction Pending Approval
+
+Amount: ₹${amount}
+
+From: ${from_name}
+
+To: ${to_name}`
+            },
+
+            action:{
+
+              buttons:[
+
+                {
+
+                  type:'reply',
+
+                  reply:{
+                    id:`approve_${transaction_id}`,
+                    title:'Approve'
+                  }
+
+                },
+
+                {
+
+                  type:'reply',
+
+                  reply:{
+                    id:`reject_${transaction_id}`,
+                    title:'Reject'
+                  }
+
+                }
+
+              ]
+
+            }
+
+          }
+
+        })
+
+      }
+
+    );
+
+    console.log(
+      'WhatsApp message sent'
+    );
+
+  } catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
 // ADD TRANSACTION
 app.post('/transaction', async (req, res) => {
 
@@ -191,6 +294,27 @@ created_by,
 proof_url
 
 ]
+
+);
+
+const latest = await pool.query(
+
+  `SELECT id
+   FROM transactions
+   ORDER BY id DESC
+   LIMIT 1`
+
+);
+
+const transaction_id =
+  latest.rows[0].id;
+
+await sendWhatsAppMessage(
+
+  amount,
+  from_name,
+  to_name,
+  transaction_id
 
 );
 
