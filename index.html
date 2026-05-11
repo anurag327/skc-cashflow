@@ -550,6 +550,17 @@ function renderLedger(data){
 
         <td>${t.created_by || ''}</td>
 
+        <td>
+
+          <button
+            class="submitBtn"
+            onclick="deleteTransaction(${t.id})"
+          >
+            Delete
+          </button>
+
+        </td>
+
       </tr>
 
     `;
@@ -557,7 +568,6 @@ function renderLedger(data){
   });
 
 }
-
 async function loadBalances(){
 
   const usersRes =
@@ -608,7 +618,51 @@ loadUsers().then(()=>{
   loadBalances();
 
 });
+async function deleteTransaction(id){
 
+  const reason = prompt(
+    "Enter delete reason"
+  );
+
+  if(!reason) return;
+
+  const currentUser = JSON.parse(
+    localStorage.getItem('user')
+  );
+
+  await fetch(
+
+    API + "/delete/" + id,
+
+    {
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body: JSON.stringify({
+
+        deleted_by: currentUser.name,
+
+        deleted_reason: reason
+
+      })
+
+    }
+
+  );
+
+  alert("Transaction Deleted");
+
+  loadLedger();
+
+  loadPending();
+
+  loadBalances();
+
+}
 </script>
 
 </body>
