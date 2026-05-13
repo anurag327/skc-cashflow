@@ -13,13 +13,13 @@ const handleLogin = async () => {
 
   try {
 
-    const response = await axios.post(
-"https://skc-cashflow.onrender.com/login"
-      {
-        username,
-        password
-      }
-    );
+const response = await axios.post(
+  "https://skc-cashflow.onrender.com/login",
+  {
+    username,
+    password
+  }
+);
 
     console.log(response.data);
 
