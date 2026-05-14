@@ -343,7 +343,7 @@ transform: started
   ? "translateY(-220px)"
   : "translateY(0px)",
   position: "relative",
-zIndex: "1",
+zIndex: "20",
         pointerEvents: "none",
     }}
   />
@@ -368,8 +368,8 @@ zIndex: "1",
       width: "350px",
       maxWidth: "90%",
       marginTop: "-220px",
-      position: "absolute",
-      zIndex: "9999",
+      position: "relative",
+      zIndex: "5",
       pointerEvents: "auto"
     }}
   >
