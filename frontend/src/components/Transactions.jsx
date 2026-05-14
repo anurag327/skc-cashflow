@@ -7,7 +7,8 @@ function Transactions({ fetchLedger }) {
     from_name: "",
     to_name: "",
     amount: "",
-    remark: ""
+    remark: "",
+    proof: null
   });
 
   const handleSubmit = async () => {
@@ -31,7 +32,10 @@ function Transactions({ fetchLedger }) {
 
           created_by: "Admin",
 
-          proof_url: ""
+proof_url:
+  form.proof
+    ? form.proof.name
+    : ""
         }
       );
 
@@ -41,7 +45,8 @@ function Transactions({ fetchLedger }) {
         from_name: "",
         to_name: "",
         amount: "",
-        remark: ""
+        remark: "",
+        proof: null
       });
 
       fetchLedger();
@@ -131,6 +136,21 @@ function Transactions({ fetchLedger }) {
           }
           style={inputStyle}
         />
+
+        <input
+  type="file"
+  accept="image/*"
+  capture="environment"
+  onChange={(e) =>
+    setForm({
+      ...form,
+      proof: e.target.files[0]
+    })
+  }
+  style={{
+    color: "white"
+  }}
+/>
 
         <button
           onClick={handleSubmit}
