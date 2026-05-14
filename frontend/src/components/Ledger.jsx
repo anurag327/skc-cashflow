@@ -2,79 +2,168 @@ import React from "react";
 
 function Ledger({ ledger }) {
 
+  const groupedLedger = {};
+
+  ledger.forEach((item) => {
+
+    const date = new Date(
+      item.created_at
+    ).toLocaleDateString();
+
+    if (!groupedLedger[date]) {
+      groupedLedger[date] = [];
+    }
+
+    groupedLedger[date].push(item);
+
+  });
+
   return (
 
-    <div
-      style={{
-        background: "#0b1d1e",
-        padding: "30px",
-        borderRadius: "24px",
-        border:
-          "1px solid rgba(255,255,255,0.05)"
-      }}
-    >
+    <div>
 
       <h2
         style={{
+          color: "white",
           marginBottom: "20px",
-          color: "white"
+          fontSize: "32px"
         }}
       >
         Ledger Entries
       </h2>
 
-      {ledger.length === 0 && (
+      {Object.keys(groupedLedger).map((date) => (
 
-        <p
+        <details
+          key={date}
+          open
           style={{
-            color: "#9ca3af"
-          }}
-        >
-          No transactions found
-        </p>
-
-      )}
-
-      {ledger.map((item) => (
-
-        <div
-          key={item.id}
-          style={{
-            padding: "18px",
-            borderBottom:
+            marginBottom: "20px",
+            background: "#0b1d1e",
+            borderRadius: "20px",
+            padding: "20px",
+            border:
               "1px solid rgba(255,255,255,0.05)"
           }}
         >
 
-          <h3
+          <summary
             style={{
-              color: "white"
-            }}
-          >
-            ₹ {item.amount}
-          </h3>
-
-          <p
-            style={{
-              color: "#9ca3af",
-              marginTop: "6px"
-            }}
-          >
-            {item.from_name}
-            {" → "}
-            {item.to_name}
-          </p>
-
-          <p
-            style={{
+              cursor: "pointer",
               color: "#facc15",
-              marginTop: "6px"
+              fontSize: "20px",
+              marginBottom: "20px"
             }}
           >
-            {item.status}
-          </p>
+            {date}
+          </summary>
 
-        </div>
+          <div
+            style={{
+              overflowX: "auto"
+            }}
+          >
+
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                color: "white"
+              }}
+            >
+
+              <thead>
+
+                <tr>
+
+                  {[
+                    "From",
+                    "To",
+                    "Amount",
+                    "Status",
+                    "Remark"
+                  ].map((head) => (
+
+                    <th
+                      key={head}
+                      style={{
+                        textAlign: "left",
+                        padding: "14px",
+                        borderBottom:
+                          "1px solid rgba(255,255,255,0.08)",
+                        color: "#9ca3af"
+                      }}
+                    >
+                      {head}
+                    </th>
+
+                  ))}
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {groupedLedger[date].map((item) => (
+
+                  <tr
+                    key={item.id}
+                  >
+
+                    <td
+                      style={{
+                        padding: "14px"
+                      }}
+                    >
+                      {item.from_name}
+                    </td>
+
+                    <td
+                      style={{
+                        padding: "14px"
+                      }}
+                    >
+                      {item.to_name}
+                    </td>
+
+                    <td
+                      style={{
+                        padding: "14px",
+                        color: "#facc15",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      ₹ {item.amount}
+                    </td>
+
+                    <td
+                      style={{
+                        padding: "14px"
+                      }}
+                    >
+                      {item.status}
+                    </td>
+
+                    <td
+                      style={{
+                        padding: "14px"
+                      }}
+                    >
+                      {item.remark || "-"}
+                    </td>
+
+                  </tr>
+
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </details>
 
       ))}
 
