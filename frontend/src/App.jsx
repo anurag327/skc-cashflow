@@ -79,7 +79,7 @@ return (
       maxWidth: "380px",
       objectFit: "contain",
       display: "block",
-      margin: "0 auto -60px auto"
+      margin: "0 auto -60px auto",
     }}
   />
 
@@ -323,9 +323,12 @@ fontFamily: "Arial"
       width: started ? "650px" : "850px",
       maxWidth: "92%",
       transition: "all 1s ease",
-      transform: started
-        ? "translateY(-100px)"
-        : "translateY(0px)"
+transform: started
+  ? "translateY(-220px)"
+  : "translateY(0px)",
+  position: "relative",
+zIndex: "1",
+        pointerEvents: "none",
     }}
   />
 
@@ -348,6 +351,8 @@ fontFamily: "Arial"
     onClick={(e) => e.stopPropagation()}
       style={{
         width: "350px",
+          position: "relative",
+  zIndex: "10",
         maxWidth: "90%",
         marginTop: "-220px"
       }}
