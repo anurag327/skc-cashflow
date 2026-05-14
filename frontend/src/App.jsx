@@ -304,7 +304,6 @@ return (
 return (
 
 <div
-onClick={() => setStarted(true)}
 style={{
 background: "#061314",
 minHeight: "100vh",
@@ -331,19 +330,22 @@ fontFamily: "Arial"
   />
 
   {!started && (
-    <p
-      style={{
+<p
+  onClick={() => setStarted(true)}
+  style={{
         color: "#facc15",
         marginTop: "20px",
-        letterSpacing: "5px"
+        letterSpacing: "5px",
+        cursor: "pointer"
       }}
     >
       TAP ANYWHERE
     </p>
   )}
 
-  {started && (
-    <div
+{started && (
+  <div
+    onClick={(e) => e.stopPropagation()}
       style={{
         width: "350px",
         maxWidth: "90%",
