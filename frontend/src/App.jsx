@@ -4,6 +4,15 @@ import { useEffect } from "react";
 import Ledger from "./components/Ledger";
 import Transactions from "./components/Transactions";
 import Pending from "./components/Pending";
+import DeleteRequests from "./components/DeleteRequests";
+import DeletedAudit from "./components/DeletedAudit";
+import Dashboard from "./components/Dashboard";
+import Users from "./components/Users";
+import Profile from "./components/Profile";
+import Notifications from "./components/Notifications";
+import Reports from "./components/Reports";
+import Settings from "./components/Settings";
+import Deals from "./components/Deals";
 
 function App() {
 
@@ -126,12 +135,17 @@ return (
 
 {[
   "Dashboard",
-  "My Profile",
+  "Profile",
+  "Deals"
+  "Users",
   "Ledger",
   "Pending",
   "Transactions",
+  "Delete Requests"
+  "Deleted Audit",
   "Chat",
   "Reports",
+  "Notifications"
   "Settings",
   "Logout"
 ].map((item) => (
@@ -309,6 +323,36 @@ return (
 {activePage === "Pending" && (
   <Pending fetchLedger={fetchLedger} />
 )}
+{activePage === "Delete Requests" && (
+  <DeleteRequests
+    fetchLedger={fetchLedger}
+  />
+)}
+{activePage === "Deleted Audit" && (
+  <DeletedAudit />
+)}
+{activePage === "Dashboard" && (
+  <Dashboard />
+)}
+{activePage === "Users" && (
+  <Users />
+)}
+{activePage === "Profile" && (
+  <Profile />
+)}
+{activePage === "Notifications" && (
+  <Notifications />
+)}
+{activePage === "Reports" && (
+  <Reports />
+)}
+{activePage === "Settings" && (
+  <Settings />
+)}
+{activePage === "Deals" && (
+  <Deals />
+)}
+
     </div>
 
   </div>
