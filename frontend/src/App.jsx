@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import Ledger from "./components/Ledger";
 
 function App() {
 
@@ -297,31 +298,8 @@ return (
 
 )}
 
-{activePage !== "Dashboard" && (
-
-  <div
-    style={{
-      background: "#0b1d1e",
-      padding: "40px",
-      borderRadius: "24px",
-      border:
-        "1px solid rgba(255,255,255,0.05)"
-    }}
-  >
-
-    <h2>{activePage} Page</h2>
-
-    <p
-      style={{
-        color: "#9ca3af",
-        marginTop: "10px"
-      }}
-    >
-      This module will be connected next.
-    </p>
-
-  </div>
-
+{activePage === "Ledger" && (
+  <Ledger ledger={ledger} />
 )}
     </div>
 
