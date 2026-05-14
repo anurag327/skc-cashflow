@@ -136,7 +136,7 @@ return (
 {[
   "Dashboard",
   "Profile",
-  "Deals"
+  "Deals",
   "Users",
   "Ledger",
   "Pending",
@@ -145,7 +145,7 @@ return (
   "Deleted Audit",
   "Chat",
   "Reports",
-  "Notifications"
+  "Notifications",
   "Settings",
   "Logout"
 ].map((item) => (
