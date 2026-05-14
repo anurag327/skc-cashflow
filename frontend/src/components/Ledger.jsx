@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function Ledger({ ledger }) {
 
@@ -166,7 +167,8 @@ function Ledger({ ledger }) {
                   "To",
                   "Amount",
                   "Status",
-                  "Remark"
+                  "Remark",
+                    "Action"
                 ].map((head) => (
 
                   <th
@@ -199,6 +201,50 @@ function Ledger({ ledger }) {
                   </td>
 
                   <td style={{ padding: "14px" }}>
+
+  <button
+    onClick={async () => {
+
+      const reason = prompt(
+        "Reason for delete?"
+      );
+
+      if (!reason) return;
+
+      try {
+
+        await axios.post(
+          `https://skc-cashflow.onrender.com/delete/${item.id}`,
+          {
+            deleted_by: "Admin",
+            deleted_reason: reason
+          }
+        );
+
+        alert("Delete Requested");
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    }}
+    style={{
+      background: "#ef4444",
+      border: "none",
+      padding: "10px 14px",
+      borderRadius: "10px",
+      color: "white",
+      cursor: "pointer"
+    }}
+  >
+    Delete
+  </button>
+
+</td>
+
+                  <td style={{ padding: "14px" }}>
                     {item.to_name}
                   </td>
 
@@ -212,9 +258,20 @@ function Ledger({ ledger }) {
                     ₹ {item.amount}
                   </td>
 
-                  <td style={{ padding: "14px" }}>
-                    {item.status}
-                  </td>
+<td
+  style={{
+    padding: "14px",
+    color:
+      item.status === "approved"
+        ? "#22c55e"
+        : item.status === "rejected"
+        ? "#ef4444"
+        : "#facc15",
+    fontWeight: "bold"
+  }}
+>
+  {item.status}
+</td>
 
                   <td style={{ padding: "14px" }}>
                     {item.remark || "-"}

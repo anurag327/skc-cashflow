@@ -363,6 +363,35 @@ app.post('/approve/:id', async (req, res) => {
 
 });
 
+app.post('/reject/:id', async (req, res) => {
+
+  const { id } = req.params;
+
+  try {
+
+    await pool.query(
+      `UPDATE transactions
+       SET status='rejected'
+       WHERE id=$1`,
+      [id]
+    );
+
+    res.json({
+      message: 'Rejected'
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      error: 'Reject error'
+    });
+
+  }
+
+});
+
 // LEDGER
 app.get('/ledger', async (req, res) => {
 
