@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
 
@@ -8,6 +9,7 @@ const [loggedIn, setLoggedIn] = useState(false);
 const [activePage, setActivePage] = useState("Dashboard");
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
+const [ledger, setLedger] = useState([]);
 
 const handleLogin = async () => {
 
@@ -34,6 +36,34 @@ const response = await axios.post(
   }
 
 };
+
+const fetchLedger = async () => {
+
+  try {
+
+    const response = await axios.get(
+      "https://skc-cashflow.onrender.com/ledger"
+    );
+
+    setLedger(response.data);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
+useEffect(() => {
+
+  if (loggedIn) {
+
+    fetchLedger();
+
+  }
+
+}, [loggedIn]);
 
 if (loggedIn) {
 
