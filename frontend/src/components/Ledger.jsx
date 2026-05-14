@@ -72,36 +72,60 @@ function Ledger({ ledger }) {
               }}
             >
 
-              <thead>
+<thead>
 
-                <tr>
+  <tr>
 
-                  {[
-                    "From",
-                    "To",
-                    "Amount",
-                    "Status",
-                    "Remark"
-                  ].map((head) => (
+    {[
+      "From",
+      "To",
+      "Amount",
+      "Status",
+      "Remark"
+    ].map((head) => (
 
-                    <th
-                      key={head}
-                      style={{
-                        textAlign: "left",
-                        padding: "14px",
-                        borderBottom:
-                          "1px solid rgba(255,255,255,0.08)",
-                        color: "#9ca3af"
-                      }}
-                    >
-                      {head}
-                    </th>
+      <th
+        key={head}
+        style={{
+          textAlign: "left",
+          padding: "14px",
+          borderBottom:
+            "1px solid rgba(255,255,255,0.08)",
+          color: "#9ca3af"
+        }}
+      >
 
-                  ))}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px"
+          }}
+        >
 
-                </tr>
+          <span>{head}</span>
 
-              </thead>
+          <input
+            placeholder={`Filter ${head}`}
+            style={{
+              background: "#061314",
+              border: "none",
+              padding: "8px",
+              borderRadius: "8px",
+              color: "white",
+              fontSize: "12px"
+            }}
+          />
+
+        </div>
+
+      </th>
+
+    ))}
+
+  </tr>
+
+</thead>
 
               <tbody>
 
