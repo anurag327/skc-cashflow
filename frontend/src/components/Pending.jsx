@@ -253,7 +253,8 @@ function Pending({ fetchLedger }) {
   style={{
     display: "flex",
     gap: "12px",
-    marginTop: "16px"
+    marginTop: "16px",
+    flexWrap: "wrap"
   }}
 >
 
@@ -287,6 +288,49 @@ function Pending({ fetchLedger }) {
     }}
   >
     Reject
+  </button>
+
+  <button
+    onClick={async () => {
+
+      const confirmDelete =
+        window.confirm(
+          "Cancel this pending request?"
+        );
+
+      if (!confirmDelete) return;
+
+      try {
+
+        await axios.post(
+          `https://skc-cashflow.onrender.com/cancel-pending/${item.id}`
+        );
+
+        alert(
+          "Pending request cancelled"
+        );
+
+        fetchPending();
+
+        fetchLedger();
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    }}
+    style={{
+      padding: "12px 20px",
+      border: "none",
+      borderRadius: "10px",
+      background: "#6b7280",
+      color: "white",
+      cursor: "pointer"
+    }}
+  >
+    Delete
   </button>
 
 </div>
