@@ -54,6 +54,26 @@ function Pending({ fetchLedger }) {
 
   };
 
+  const rejectTransaction = async (id) => {
+
+  try {
+
+    await axios.post(
+      `https://skc-cashflow.onrender.com/reject/${id}`
+    );
+
+    fetchPending();
+
+    fetchLedger();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
   useEffect(() => {
 
     fetchPending();
@@ -229,25 +249,49 @@ function Pending({ fetchLedger }) {
                 {item.remark}
               </p>
 
-              <button
-                onClick={() =>
-                  approveTransaction(item.id)
-                }
-                style={{
-                  marginTop: "16px",
-                  padding: "12px 20px",
-                  border: "none",
-                  borderRadius: "10px",
-                  background: "#22c55e",
-                  color: "white",
-                  cursor: "pointer"
-                }}
-              >
-                Approve
-              </button>
+<div
+  style={{
+    display: "flex",
+    gap: "12px",
+    marginTop: "16px"
+  }}
+>
+
+  <button
+    onClick={() =>
+      approveTransaction(item.id)
+    }
+    style={{
+      padding: "12px 20px",
+      border: "none",
+      borderRadius: "10px",
+      background: "#22c55e",
+      color: "white",
+      cursor: "pointer"
+    }}
+  >
+    Approve
+  </button>
+
+  <button
+    onClick={() =>
+      rejectTransaction(item.id)
+    }
+    style={{
+      padding: "12px 20px",
+      border: "none",
+      borderRadius: "10px",
+      background: "#ef4444",
+      color: "white",
+      cursor: "pointer"
+    }}
+  >
+    Reject
+  </button>
+
+</div>
 
             </div>
-
           ))}
 
         </details>
