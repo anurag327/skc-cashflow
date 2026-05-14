@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Ledger from "./components/Ledger";
 import Transactions from "./components/Transactions";
+import Pending from "./components/Pending";
 
 function App() {
 
@@ -304,6 +305,9 @@ return (
 )}
 {activePage === "Transactions" && (
   <Transactions fetchLedger={fetchLedger} />
+)}
+{activePage === "Pending" && (
+  <Pending fetchLedger={fetchLedger} />
 )}
     </div>
 
