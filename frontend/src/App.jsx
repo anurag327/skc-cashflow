@@ -348,15 +348,15 @@ zIndex: "1",
 
 {started && (
   <div
-    onClick={(e) => e.stopPropagation()}
-      style={{
-        width: "350px",
-          position: "relative",
-  zIndex: "10",
-        maxWidth: "90%",
-        marginTop: "-220px"
-      }}
-    >
+    style={{
+      width: "350px",
+      maxWidth: "90%",
+      marginTop: "-220px",
+      position: "absolute",
+      zIndex: "9999",
+      pointerEvents: "auto"
+    }}
+  >
 
       <input
           placeholder="Username"
