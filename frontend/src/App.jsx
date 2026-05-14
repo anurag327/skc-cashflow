@@ -141,7 +141,7 @@ return (
   "Ledger",
   "Pending",
   "Transactions",
-  "Delete Requests"
+  "Delete Requests",
   "Deleted Audit",
   "Chat",
   "Reports",
