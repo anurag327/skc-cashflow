@@ -965,15 +965,10 @@ app.post('/bank-accounts', async (req,res)=>{
     const {
 
       account_name,
-
       account_holder_name,
-
       account_number,
-
       iban_number,
-
       bank_name,
-
       type
 
     } = req.body;
@@ -984,39 +979,25 @@ app.post('/bank-accounts', async (req,res)=>{
       `INSERT INTO bank_accounts (
 
         account_name,
-
         account_holder_name,
-
         account_number,
-
         iban_number,
-
         bank_name,
-
         type
 
       )
 
-      VALUES (
-
-        $1,$2,$3,$4,$5,$6
-
-      )
+      VALUES ($1,$2,$3,$4,$5,$6)
 
       RETURNING *`,
 
       [
 
         account_name,
-
         account_holder_name,
-
         account_number,
-
         iban_number,
-
         bank_name,
-
         type
 
       ]
@@ -1031,6 +1012,37 @@ app.post('/bank-accounts', async (req,res)=>{
 
     res.status(500).json({
       error:'Bank account save failed'
+    });
+
+  }
+
+});
+
+app.get('/bank-accounts', async (req,res)=>{
+
+  try {
+
+    const result =
+      await pool.query(
+
+        `SELECT *
+         FROM bank_accounts
+         ORDER BY created_at DESC`
+
+      );
+
+    res.json(result.rows);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Accounts fetch failed'
+    });
+
+  }
+
 });
 
 app.get('/employee-holdings', async (req,res)=>{
@@ -1107,11 +1119,8 @@ app.put('/profile/:id', async (req,res)=>{
     const {
 
       name,
-
       email,
-
       phone,
-
       role
 
     } = req.body;
@@ -1122,13 +1131,9 @@ app.put('/profile/:id', async (req,res)=>{
       `UPDATE users
 
        SET
-
        name = $1,
-
        email = $2,
-
        phone = $3,
-
        role = $4
 
        WHERE id = $5
@@ -1138,13 +1143,9 @@ app.put('/profile/:id', async (req,res)=>{
       [
 
         name,
-
         email,
-
         phone,
-
         role,
-
         req.params.id
 
       ]
