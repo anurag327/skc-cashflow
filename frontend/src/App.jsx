@@ -210,8 +210,13 @@ return (
 
   <div
     style={{
+        
       flex: 1,
-      padding: "40px"
+
+  padding:"24px 40px",
+
+  overflowY:"auto"
+
     }}
   >
 
