@@ -13,6 +13,7 @@ import Notifications from "./components/Notifications";
 import Reports from "./components/Reports";
 import Settings from "./components/Settings";
 import Deals from "./components/Deals";
+import BankAccounts from "./components/BankAccounts";
 
 function App() {
 
@@ -141,6 +142,7 @@ return (
   "Ledger",
   "Pending",
   "Transactions",
+  "Bank Master",
   "Delete Requests",
   "Deleted Audit",
   "Chat",
@@ -351,6 +353,9 @@ return (
 )}
 {activePage === "Deals" && (
   <Deals />
+)}
+{activePage === "Bank Master" && (
+  <BankAccounts />
 )}
 
     </div>

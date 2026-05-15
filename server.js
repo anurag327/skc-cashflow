@@ -958,6 +958,81 @@ app.get('/deals', async (req,res)=>{
 
 });
 
+app.post('/bank-accounts', async (req,res)=>{
+
+  try {
+
+    const {
+
+      account_name,
+
+      account_holder_name,
+
+      account_number,
+
+      iban_number,
+
+      bank_name,
+
+      type
+
+    } = req.body;
+
+    const result =
+      await pool.query(
+
+      `INSERT INTO bank_accounts (
+
+        account_name,
+
+        account_holder_name,
+
+        account_number,
+
+        iban_number,
+
+        bank_name,
+
+        type
+
+      )
+
+      VALUES (
+
+        $1,$2,$3,$4,$5,$6
+
+      )
+
+      RETURNING *`,
+
+      [
+
+        account_name,
+
+        account_holder_name,
+
+        account_number,
+
+        iban_number,
+
+        bank_name,
+
+        type
+
+      ]
+
+    );
+
+    res.json(result.rows[0]);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Bank account save failed'
+});
+
 // SERVER
 app.listen(3000, () => {
 
