@@ -773,5 +773,54 @@ const valueStyle = {
   marginTop:"10px"
 
 };
+await pool.query(
+
+  `INSERT INTO treasury_ledger (
+
+    deal_id,
+    employee_name,
+    entry_type,
+    amount,
+    remarks
+
+  )
+
+  VALUES ($1,$2,$3,$4,$5)` ,
+
+  [
+    result.rows[0].id,
+    received_by,
+     'self_deposit',
+    'cash_received',
+    cash_amount,
+    'Cash received from client'
+  ]
+
+);
+await pool.query(
+
+  `INSERT INTO treasury_ledger (
+
+    deal_id,
+    employee_name,
+    entry_type,
+    amount,
+    reference_account,
+    remarks
+
+  )
+
+  VALUES ($1,$2,$3,$4,$5,$6)` ,
+
+  [
+    result.rows[0].id,
+    received_by,
+    'cash_given_to_exchanger',
+    cash_amount,
+    exchanger_account,
+    'Cash handed to exchanger'
+  ]
+
+);
 
 export default Deals;

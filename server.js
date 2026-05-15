@@ -1033,6 +1033,138 @@ app.post('/bank-accounts', async (req,res)=>{
       error:'Bank account save failed'
 });
 
+app.get('/employee-holdings', async (req,res)=>{
+
+  try {
+
+    const result =
+      await pool.query(`
+
+        SELECT
+          employee_name,
+
+          SUM(
+            CASE
+              WHEN entry_type = 'cash_received'
+              THEN amount
+              ELSE -amount
+            END
+          ) AS holding
+
+        FROM treasury_ledger
+
+        GROUP BY employee_name
+
+      `);
+
+    res.json(result.rows);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Holdings fetch failed'
+    });
+
+  }
+
+});
+
+app.get('/profile/:id', async (req,res)=>{
+
+  try {
+
+    const result =
+      await pool.query(
+
+        `SELECT *
+         FROM users
+         WHERE id = $1`,
+
+        [req.params.id]
+
+      );
+
+    res.json(result.rows[0]);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Profile fetch failed'
+    });
+
+  }
+
+});
+
+app.put('/profile/:id', async (req,res)=>{
+
+  try {
+
+    const {
+
+      name,
+
+      email,
+
+      phone,
+
+      role
+
+    } = req.body;
+
+    const result =
+      await pool.query(
+
+      `UPDATE users
+
+       SET
+
+       name = $1,
+
+       email = $2,
+
+       phone = $3,
+
+       role = $4
+
+       WHERE id = $5
+
+       RETURNING *`,
+
+      [
+
+        name,
+
+        email,
+
+        phone,
+
+        role,
+
+        req.params.id
+
+      ]
+
+    );
+
+    res.json(result.rows[0]);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Profile update failed'
+    });
+
+  }
+
+});
+
 // SERVER
 app.listen(3000, () => {
 

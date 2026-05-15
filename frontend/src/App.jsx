@@ -14,6 +14,7 @@ import Reports from "./components/Reports";
 import Settings from "./components/Settings";
 import Deals from "./components/Deals";
 import BankAccounts from "./components/BankAccounts";
+import TreasuryDeals from "./components/TreasuryDeals";
 
 function App() {
 
@@ -23,6 +24,8 @@ const [activePage, setActivePage] = useState("Dashboard");
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
 const [ledger, setLedger] = useState([]);
+const [holdings, setHoldings] =
+  useState([]);
 
 const handleLogin = async () => {
 
@@ -68,11 +71,32 @@ const fetchLedger = async () => {
 
 };
 
+const fetchHoldings =
+  async () => {
+
+    try {
+
+      const response =
+        await axios.get(
+          "https://skc-cashflow.onrender.com/employee-holdings"
+        );
+
+      setHoldings(response.data);
+
+    } catch(error){
+
+      console.log(error);
+
+    }
+
+  };
+
 useEffect(() => {
 
   if (loggedIn) {
 
     fetchLedger();
+    fetchHoldings();
 
   }
 
@@ -141,6 +165,7 @@ return (
   "Users",
   "Ledger",
   "Pending",
+  "Treasury Deals",
   "Transactions",
   "Bank Master",
   "Delete Requests",
@@ -199,118 +224,146 @@ return (
       {activePage}
     </h1>
 {activePage === "Dashboard" && (
-<div
-  style={{
-    background: "#0b1d1e",
-    padding: "24px",
-    borderRadius: "24px",
-    marginBottom: "30px",
-    border: "1px solid rgba(255,255,255,0.05)"
-  }}
->
 
-  <h2
-    style={{
-      marginBottom: "20px"
-    }}
-  >
+  <div>
 
+    <h1
+      style={{
+        color:"white",
+        marginBottom:"30px"
+      }}
+    >
+      Treasury Dashboard
+    </h1>
 
-    My Profile
-  </h2>
+    <div
+      style={{
+        display:"grid",
+        gridTemplateColumns:
+          "repeat(auto-fit,minmax(240px,1fr))",
 
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(auto-fit,minmax(220px,1fr))",
-      gap: "20px"
-    }}
-  >
+        gap:"20px",
 
-    {[
-      "Name",
-      "Email",
-      "Mobile",
-      "WhatsApp"
-    ].map((field) => (
+        marginBottom:"30px"
+      }}
+    >
+
+      <div style={dashboardCard}>
+        <p style={dashboardLabel}>
+          Total Transactions
+        </p>
+
+        <h2 style={dashboardValue}>
+          {ledger.length}
+        </h2>
+      </div>
+
+      <div style={dashboardCard}>
+        <p style={dashboardLabel}>
+          Pending Approvals
+        </p>
+
+        <h2 style={dashboardValue}>
+          {
+            ledger.filter(
+              (item)=>
+                item.status === "pending"
+            ).length
+          }
+        </h2>
+      </div>
+
+      <div style={dashboardCard}>
+        <p style={dashboardLabel}>
+          Delete Requests
+        </p>
+
+        <h2 style={dashboardValue}>
+          {
+            ledger.filter(
+              (item)=>
+                item.delete_requested
+            ).length
+          }
+        </h2>
+      </div>
+
+      <div style={dashboardCard}>
+        <p style={dashboardLabel}>
+          Treasury Deals
+        </p>
+
+        <h2 style={dashboardValue}>
+          Live
+        </h2>
+      </div>
+
+    </div>
+
+    <div
+      style={{
+        background:"#0b1d1e",
+        padding:"30px",
+        borderRadius:"24px",
+        border:
+          "1px solid rgba(255,255,255,0.05)"
+      }}
+    >
+
+      <h2
+        style={{
+          color:"white",
+          marginBottom:"24px"
+        }}
+      >
+        Employee Holdings
+      </h2>
 
       <div
-        key={field}
         style={{
-          background: "rgba(255,255,255,0.03)",
-          padding: "6px 18px 18px 18px",
-          borderRadius: "5px"
+          display:"grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(220px,1fr))",
+
+          gap:"20px"
         }}
       >
 
-        <p
-          style={{
-            color: "#9ca3af",
-            marginBottom: "2px",
-            fontSize: "14px"
-          }}
-        >
-          {field}
-        </p>
+        {holdings.map((item)=>(
 
-        <p>
-          Not Connected Yet
-        </p>
+          <div
+            key={item.employee_name}
+            style={{
+              background:"#061314",
+              padding:"24px",
+              borderRadius:"20px"
+            }}
+          >
 
-      </div>
+            <p
+              style={{
+                color:"#9ca3af"
+              }}
+            >
+              {item.employee_name}
+            </p>
 
-    ))}
+            <h2
+              style={{
+                color:"#facc15",
+                marginTop:"12px"
+              }}
+            >
+              AED {item.holding || 0}
+            </h2>
 
-  </div>
+          </div>
 
-</div>
-
-)}
-
- {activePage === "Dashboard" && (
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(auto-fit,minmax(250px,1fr))",
-      gap: "24px"
-    }}
-  >
-
-    {[
-      "Pending Approvals",
-      "Ledger Entries",
-      "Employees",
-      "Transactions"
-    ].map((card) => (
-
-      <div
-        key={card}
-        style={{
-          background: "#0b1d1e",
-          padding: "30px",
-          borderRadius: "24px",
-          border:
-            "1px solid rgba(255,255,255,0.05)"
-        }}
-      >
-
-        <h2>{card}</h2>
-
-        <p
-          style={{
-            color: "#9ca3af",
-            marginTop: "10px"
-          }}
-        >
-          Premium analytics panel
-        </p>
+        ))}
 
       </div>
 
-    ))}
+    </div>
 
   </div>
 
@@ -356,6 +409,9 @@ return (
 )}
 {activePage === "Bank Master" && (
   <BankAccounts />
+)}
+{activePage === "Treasury Deals" && (
+  <TreasuryDeals />
 )}
 
     </div>
@@ -479,5 +535,31 @@ fontSize: "16px"
 );
 
 }
+const dashboardCard = {
+
+  background:"#0b1d1e",
+
+  padding:"24px",
+
+  borderRadius:"20px",
+
+  border:
+    "1px solid rgba(255,255,255,0.05)"
+
+};
+
+const dashboardLabel = {
+
+  color:"#9ca3af"
+
+};
+
+const dashboardValue = {
+
+  color:"white",
+
+  marginTop:"12px"
+
+};
 
 export default App;
