@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
@@ -22,12 +25,15 @@ app.use(express.static(__dirname));
 
 // DATABASE
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
 
+  connectionString: process.env.DATABASE_URL,
+
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized:false }
+      : false
+
+});
 // HOME
 
 // USERS
@@ -1270,6 +1276,113 @@ app.get('/projects', async (req,res)=>{
 
     res.status(500).json({
       error:'Projects fetch failed'
+    });
+
+  }
+
+});
+
+app.get('/import-project', async (req,res)=>{
+
+  try {
+
+const url =
+'https://www.propertyfinder.ae/en/buy/properties-for-sale.html?cq_src=google_ads&cq_cmp=17754647944&cq_con=137682192846&cq_term=property%20finder&cq_med=&cq_plac=&cq_net=g&cq_plt=gp&gad_source=1&gad_campaignid=17754647944&gbraid=0AAAAADr_kZPYpprwKAlOzRknd-T6uc3K7&gclid=Cj0KCQjwiJvQBhCYARIsAMjts3IO1izZKeUsJzUndVWMpeOsF_nMPj_lCzhmYyDS_F-dPK0i9AC_sngaAkErEALw_wcB';
+
+const response =
+  await axios.post(
+
+    'https://property-finder-api.p.rapidapi.com/property/listing-by-url',
+
+    {
+
+      url
+
+    },
+
+    {
+
+      headers: {
+
+        'Content-Type':
+          'application/json',
+
+        'X-RapidAPI-Key':
+          process.env.RAPID_API_KEY,
+
+        'X-RapidAPI-Host':
+          'property-finder-api.p.rapidapi.com'
+
+      }
+
+    }
+
+  );
+
+console.log(response.data);
+
+const project =
+  response.data?.data;
+
+    if(!project){
+
+      return res.status(404).json({
+
+        error:'No project found'
+
+      });
+
+    }
+
+    await pool.query(
+
+      `INSERT INTO projects (
+
+        project_name,
+        developer,
+        area,
+        starting_price,
+        handover_date,
+        description
+
+      )
+
+      VALUES ($1,$2,$3,$4,$5,$6)`,
+
+      [
+
+        project.name || '',
+
+        project.developer || '',
+
+        project.location || '',
+
+        project.price || 0,
+
+        project.handover || '',
+
+        project.description || ''
+
+      ]
+
+    );
+
+    res.json({
+
+      success:true,
+
+      project
+
+    });
+
+  } catch(error){
+
+    console.log(error.response?.data || error);
+
+    res.status(500).json({
+
+      error:'Import failed'
+
     });
 
   }
