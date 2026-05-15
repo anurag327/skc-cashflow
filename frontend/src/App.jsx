@@ -15,6 +15,7 @@ import Settings from "./components/Settings";
 import Deals from "./components/Deals";
 import BankAccounts from "./components/BankAccounts";
 import TreasuryDeals from "./components/TreasuryDeals";
+import Projects from "./components/Projects";
 
 function App() {
 
@@ -169,7 +170,9 @@ return (
 
   "Pending",
 
-  "Reports & VAT"
+  "Reports & VAT",
+
+  "Projects"
 
 ].map((item) => (
 
@@ -509,6 +512,9 @@ return (
 )}
 {activePage === "Treasury Deals" && (
   <TreasuryDeals />
+)}
+{activePage === "Projects" && (
+  <Projects />
 )}
 
     </div>
