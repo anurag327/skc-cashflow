@@ -1166,6 +1166,116 @@ app.put('/profile/:id', async (req,res)=>{
 
 });
 
+app.post('/projects', async (req,res)=>{
+
+  try {
+
+    const {
+
+      project_name,
+      developer,
+      area,
+      community,
+      project_type,
+      starting_price,
+      psf,
+      handover_date,
+      payment_plan,
+      roi,
+      status,
+      description
+
+    } = req.body;
+
+    const result =
+      await pool.query(
+
+      `INSERT INTO projects (
+
+        project_name,
+        developer,
+        area,
+        community,
+        project_type,
+        starting_price,
+        psf,
+        handover_date,
+        payment_plan,
+        roi,
+        status,
+        description
+
+      )
+
+      VALUES (
+
+        $1,$2,$3,$4,$5,$6,
+        $7,$8,$9,$10,$11,$12
+
+      )
+
+      RETURNING *`,
+
+      [
+
+        project_name,
+        developer,
+        area,
+        community,
+        project_type,
+        starting_price,
+        psf,
+        handover_date,
+        payment_plan,
+        roi,
+        status,
+        description
+
+      ]
+
+    );
+
+    res.json(result.rows[0]);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Project creation failed'
+    });
+
+  }
+
+});
+
+app.get('/projects', async (req,res)=>{
+
+  try {
+
+    const result =
+      await pool.query(
+
+        `SELECT *
+         FROM projects
+         ORDER BY created_at DESC`
+
+      );
+
+    res.json(result.rows);
+
+  } catch(error){
+
+    console.log(error);
+
+    res.status(500).json({
+      error:'Projects fetch failed'
+    });
+
+  }
+
+});
+
 // SERVER
 app.listen(3000, () => {
 
