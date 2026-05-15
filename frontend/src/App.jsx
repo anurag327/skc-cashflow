@@ -159,22 +159,19 @@ return (
   >
 
 {[
+[
   "Dashboard",
-  "Profile",
-  "Deals",
-  "Users",
-  "Ledger",
-  "Pending",
+
   "Treasury Deals",
+
   "Transactions",
-  "Bank Master",
-  "Delete Requests",
-  "Deleted Audit",
-  "Chat",
-  "Reports",
-  "Notifications",
-  "Settings",
-  "Logout"
+
+  "Ledger",
+
+  "Pending",
+
+  "Reports & VAT"
+]
 ].map((item) => (
 
 <div
@@ -195,6 +192,63 @@ return (
       cursor: "pointer",
       transition: "0.3s",
       fontSize: "15px"
+    }}
+  >
+    {item}
+  </div>
+
+))}
+
+<h4
+  style={{
+    color:"#6b7280",
+    marginTop:"30px",
+    marginBottom:"10px",
+    fontSize:"13px",
+    letterSpacing:"1px"
+  }}
+>
+  ADMINISTRATION
+</h4>
+
+{[
+  "Users",
+
+  "Bank Master",
+
+  "Delete Requests"
+
+].map((item)=>(
+
+  <div
+    key={item}
+
+    onClick={()=>
+      setActivePage(item)
+    }
+
+    style={{
+
+      padding:"10px 14px",
+
+      marginBottom:"8px",
+
+      borderRadius:"10px",
+
+      cursor:"pointer",
+
+      fontSize:"14px",
+
+      background:
+        activePage === item
+          ? "#facc15"
+          : "transparent",
+
+      color:
+        activePage === item
+          ? "black"
+          : "#d1d5db"
+
     }}
   >
     {item}
@@ -228,6 +282,70 @@ return (
     >
       {activePage}
     </h1>
+
+<div
+  style={{
+
+    display:"flex",
+
+    justifyContent:"space-between",
+
+    alignItems:"center",
+
+    marginBottom:"20px"
+
+  }}
+>
+
+  <h1
+    style={{
+      color:"white",
+      margin:0
+    }}
+  >
+    {activePage}
+  </h1>
+
+  <div
+    style={{
+      display:"flex",
+      gap:"12px",
+      alignItems:"center"
+    }}
+  >
+
+    <button
+      onClick={()=>
+        setActivePage("Profile")
+      }
+      style={topButton}
+    >
+      Profile
+    </button>
+
+    <button
+      onClick={()=>
+        setActivePage("Settings")
+      }
+      style={topButton}
+    >
+      Settings
+    </button>
+
+    <button
+      onClick={()=>{
+        localStorage.removeItem("token");
+        window.location.reload();
+      }}
+      style={logoutButton}
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
 {activePage === "Dashboard" && (
 
   <div>
@@ -564,6 +682,38 @@ const dashboardValue = {
   color:"white",
 
   marginTop:"12px"
+
+};
+
+const topButton = {
+
+  background:"#0b1d1e",
+
+  color:"white",
+
+  border:"none",
+
+  padding:"10px 16px",
+
+  borderRadius:"12px",
+
+  cursor:"pointer"
+
+};
+
+const logoutButton = {
+
+  background:"#dc2626",
+
+  color:"white",
+
+  border:"none",
+
+  padding:"10px 16px",
+
+  borderRadius:"12px",
+
+  cursor:"pointer"
 
 };
 
