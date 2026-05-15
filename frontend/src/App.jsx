@@ -159,7 +159,6 @@ return (
   >
 
 {[
-[
   "Dashboard",
 
   "Treasury Deals",
@@ -171,7 +170,7 @@ return (
   "Pending",
 
   "Reports & VAT"
-]
+
 ].map((item) => (
 
 <div
@@ -274,43 +273,24 @@ return (
     }}
   >
 
-    <h1
-      style={{
-        fontSize: "42px",
-        marginBottom: "30px"
-      }}
-    >
-      {activePage}
-    </h1>
-
-<div
+    <div
   style={{
 
     display:"flex",
 
-    justifyContent:"space-between",
+    justifyContent:"flex-end",
 
     alignItems:"center",
 
-    marginBottom:"20px"
+    marginBottom:"24px"
 
   }}
 >
 
-  <h1
-    style={{
-      color:"white",
-      margin:0
-    }}
-  >
-    {activePage}
-  </h1>
-
   <div
     style={{
       display:"flex",
-      gap:"12px",
-      alignItems:"center"
+      gap:"12px"
     }}
   >
 
@@ -324,9 +304,6 @@ return (
     </button>
 
     <button
-      onClick={()=>
-        setActivePage("Settings")
-      }
       style={topButton}
     >
       Settings
@@ -509,9 +486,6 @@ return (
 {activePage === "Deleted Audit" && (
   <DeletedAudit />
 )}
-{activePage === "Dashboard" && (
-  <Dashboard />
-)}
 {activePage === "Users" && (
   <Users />
 )}
@@ -521,7 +495,7 @@ return (
 {activePage === "Notifications" && (
   <Notifications />
 )}
-{activePage === "Reports" && (
+{activePage === "Reports & VAT" && (
   <Reports />
 )}
 {activePage === "Settings" && (
