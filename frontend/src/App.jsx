@@ -142,11 +142,11 @@ return (
     src="/skc-logo.png"
     alt="SKC Logo"
     style={{
-      width: "380px",
-      maxWidth: "380px",
+      width: "220px",
+      maxWidth: "100%",
       objectFit: "contain",
       display: "block",
-      margin: "0 auto -60px auto",
+      margin: "0 auto",
     }}
   />
 
@@ -210,7 +210,7 @@ return (
 
   <div
     style={{
-        
+
       flex: 1,
 
   padding:"24px 40px",
